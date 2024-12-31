@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MarkdownHelper": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\April\\source\\repos\\MarkdownHelper\\bin\\Debug\\net9.0\\Hello， World.md\""
+    }
+  }
+}
