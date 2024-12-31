@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.IO;
+using System.Text.RegularExpressions;
 
 namespace MarkdownHelper;
 
@@ -9,10 +10,10 @@ namespace MarkdownHelper;
 
 internal class Program
 {
-    private static string 图片文件夹路径 = "Photos";
+    private static string 存放图片的文件夹 = "Photos";
 
     private static string 当前程序所在文件文件夹路径 = AppDomain.CurrentDomain.BaseDirectory;
-    private static string 程序所在文件夹内存放图片的文件夹的路径 = Path.Combine(当前程序所在文件文件夹路径, 图片文件夹路径);
+    private static string 程序所在文件夹内存放图片的文件夹的路径 = Path.Combine(当前程序所在文件文件夹路径, 存放图片的文件夹);
 
     private static void Main(string[] args)
     {
@@ -82,9 +83,10 @@ internal class Program
             图片原来的链接地址 = match.Groups[2].Value;
         }
 
-        Console.WriteLine("origin " + 图片原来的链接地址);
+        // Console.WriteLine("origin " + 图片原来的链接地址);
 
-        var 新的图片链接地址 = Path.Combine($".\\{图片文件夹路径}\\{当前文件名_不带后缀}", Path.GetFileName(图片原来的链接地址));
+        var 新的图片链接地址 = Path.Combine($".\\{存放图片的文件夹}\\{当前文件名_不带后缀}", Path.GetFileName(图片原来的链接地址));
+        新的图片链接地址 = 新的图片链接地址.Replace('\\', '/');
         新的图片超链接 = $"![{图片名}]({新的图片链接地址})";
 
         if (图片原来的链接地址.Equals(新的图片链接地址)) return;
