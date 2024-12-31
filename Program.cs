@@ -2,6 +2,11 @@
 
 namespace MarkdownHelper;
 
+/*
+ * todo
+ * 程序可能存在说，会修改网络链接的情况，可能需要修复这个问题
+ */
+
 internal class Program
 {
     private static string 图片文件夹路径 = "Photos";
