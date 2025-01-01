@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace MarkdownHelper;
 
@@ -55,8 +54,7 @@ internal class Program
 
     private static bool isWebUrl(string url)
     {
-        if (url.StartsWith("https") || url.StartsWith("http")) return true;
-        return false;
+        return url.StartsWith("https") || url.StartsWith("http");
     }
 
     private static void 获取文件中的特定链接(out List<string> 图片的链接列表, string 文件名)
@@ -95,7 +93,7 @@ internal class Program
         if (图片原来的链接地址.Equals(新的图片链接地址)) return;
         if (File.Exists(图片原来的链接地址))
         {
-            Console.Write($"    old: {图片原来的链接地址}  new: {新的图片链接地址}\n");
+            Console.Write($"    old: {图片原来的链接地址}\n    new: {新的图片链接地址}\n");
             File.Copy(图片原来的链接地址, Path.Combine(迁移的目标文件夹, Path.GetFileName(图片原来的链接地址)), true);
         }
     }
