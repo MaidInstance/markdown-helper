@@ -3,11 +3,6 @@ using System.Text.RegularExpressions;
 
 namespace MarkdownHelper;
 
-/*
- * todo
- * 程序可能存在说，会修改网络链接的情况，可能需要修复这个问题
- */
-
 internal class Program
 {
     private static string 存放图片的文件夹 = "Photos";
@@ -50,6 +45,7 @@ internal class Program
 
             foreach (var 单个链接 in 当前文件的图片链接列表)
             {
+                if (isWebUrl(单个链接)) continue; // 或许有用吧，我不知道
                 复制图片并返回新的图片超链接(单个链接, 当前文件图片迁移的目标文件夹, 当前文件名_不带后缀, out string 新的图片超链接);
                 当前文件的所有内容 = 当前文件的所有内容.Replace(单个链接, 新的图片超链接);
             }
@@ -57,11 +53,18 @@ internal class Program
         }
     }
 
+    private static bool isWebUrl(string url)
+    {
+        if (url.StartsWith("https") || url.StartsWith("http")) return true;
+        return false;
+    }
+
     private static void 获取文件中的特定链接(out List<string> 图片的链接列表, string 文件名)
     {
         图片的链接列表 = new();
         string markdownContent = File.ReadAllText(文件名);
-        string pattern = @"!\[.*?\]\(.*?\)"; Regex regex = new Regex(pattern);
+        string pattern = @"!\[.*?\]\(.*?\)";
+        Regex regex = new Regex(pattern);
         MatchCollection matches = regex.Matches(markdownContent);
 
         foreach (Match match in matches)
