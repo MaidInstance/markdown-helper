@@ -17,7 +17,6 @@ internal class Program
     {
         bool hasCommandLineArgs = args.Length > 0;
 
-        if ((!Directory.Exists(程序所在文件夹内存放图片的文件夹的路径))) Directory.CreateDirectory(程序所在文件夹内存放图片的文件夹的路径);
         string[] files = Directory.GetFiles(当前程序所在文件文件夹路径);
         List<string> md_files = [];
 
@@ -36,12 +35,13 @@ internal class Program
 
         // 配置文件是否存在，如果不存在使用默认配置执行
         JObject? j = null;
-        if (!File.Exists(ConfigFileLocation))
+        if (File.Exists(ConfigFileLocation))
         {
             j = JObject.Parse(File.ReadAllText(ConfigFileLocation));
         }
         if (j is null)
         {
+            Console.WriteLine("没有找到JSON文件，默认执行");
             JustDoIt(md_files);
             return;
         }
@@ -49,12 +49,17 @@ internal class Program
         LoadConfig(j, out bool isDefault, out bool folderIsChanged, out string folderName, out string folderName_);
 
         // 如果配置文件存在错误不能正确读取值，就默认执行
-        if (isDefault) JustDoIt(md_files);
+        if (isDefault)
+        {
+            Console.WriteLine("已经读取到了文件，读取错误，默认执行");
+            JustDoIt(md_files);
+        }
         // 使用配置文件的文件夹名字复制给程序，后面的执行就不会是默认执行
         UseNewSettings(folderName);
         JustDoIt(md_files);
         if (folderIsChanged)
         {
+            Console.WriteLine("图片已经改变，更改图片位置中");
             var oldFolderPath = Path.Combine(当前程序所在文件文件夹路径, folderName_);
             if (Path.Exists(oldFolderPath)) Directory.Delete(oldFolderPath, true);
             j["FolderName_bak"] = folderName;
@@ -65,6 +70,7 @@ internal class Program
 
     private static void JustDoIt(List<string> md_files)
     {
+        if ((!Directory.Exists(程序所在文件夹内存放图片的文件夹的路径))) Directory.CreateDirectory(程序所在文件夹内存放图片的文件夹的路径);
         foreach (var md in md_files)
         {
             Console.WriteLine($"FILE: {md} ");
